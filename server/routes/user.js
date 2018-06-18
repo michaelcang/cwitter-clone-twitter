@@ -1,10 +1,11 @@
 const router = require("express").Router();
 const userController = require("../controllers/userController");
+const userValidation = require("../middlewares/userValidation")
 
-router.get("/", userController.getAllPosts);
-router.get("/:username", userController.getUserPosts)
-router.post("/", userController.addPost);
-router.put("/:postId", userController.updatePost);
-router.delete("/:postId", userController.deletePost);
+router.get("/", userValidation, userController.getAllPosts);
+router.get("/:username", userValidation, userController.getUserPosts)
+router.post("/", userValidation, userController.addPost);
+router.put("/:postId", userValidation, userController.updatePost);
+router.delete("/:postId", userValidation, userController.deletePost);
 
 module.exports = router;
