@@ -7,7 +7,7 @@ let postSchema = new Schema(
     username: {
       type: String
     },
-    post: {
+    postText: {
       type: String,
       required: [true, "post cannot be blank"]
     },

@@ -19,13 +19,17 @@ module.exports = {
       });
   },
   getUserPosts: function(req, res) {
-    let username = req.params.username;
-    post
-      .find({ username })
-      .then(posts => {
+    let params = { username: req.params.username };
+    if (req.query.like) {
+      params.like = { $in: req.query.like };
+    }
+    user
+      .find(params)
+      .populate("posts")
+      .then(user => {
         res.status(200).json({
-          msg: `get ${username} posts`,
-          posts
+          msg: `get ${req.params.username} posts`,
+          posts: user[0].posts
         });
       })
       .catch(err => {
@@ -36,9 +40,9 @@ module.exports = {
   },
   addPost: function(req, res) {
     let username = req.body.username;
-    let post = req.body.post;
-    todo
-      .create({ username, post })
+    let postText = req.body.postText;
+    post
+      .create({ username, postText })
       .then(post => {
         user
           .findOneAndUpdate(

@@ -34,6 +34,10 @@ let userSchema = new Schema(
     posts: [{
       type: Schema.Types.ObjectId,
       ref: "posts"
+    }],
+    likes: [{
+      type: Schema.Types.ObjectId,
+      ref: "posts"
     }]
   },
   { timestamps: true }
