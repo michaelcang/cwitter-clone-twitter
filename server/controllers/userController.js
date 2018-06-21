@@ -4,8 +4,12 @@ const { user, post } = require("../models");
 
 module.exports = {
   getAllPosts: function(req, res) {
+    let params = {};
+    if (req.query.search) {
+      params = { "postText" : { $regex: `${req.query.search}`, $options: 'i' } };
+    }
     post
-      .find()
+      .find(params)
       .then(posts => {
         res.status(200).json({
           msg: "get all posts",
@@ -52,7 +56,7 @@ module.exports = {
           )
           .then(affectedUser => {
             res.status(201).json({
-              msg: "successfully add new action to do list",
+              msg: "successfully add new post to do list",
               affectedUser,
               post
             });
@@ -87,7 +91,7 @@ module.exports = {
       .findByIdAndRemove(postId)
       .then(post => {
         res.status(200).json({
-          msg: "successfully remove to do from list",
+          msg: "successfully remove post from list",
           post
         });
       })
