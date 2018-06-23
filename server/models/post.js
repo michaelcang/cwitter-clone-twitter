@@ -11,14 +11,24 @@ let postSchema = new Schema(
       type: String,
       required: [true, "post cannot be blank"]
     },
-    reply: [{
-      type: Schema.Types.ObjectId,
-      ref: "posts"
-    }],
-    likeCount: {
-      type: Number,
-      default: 0
-    }
+    reply: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "posts"
+      }
+    ],
+    retweet: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "posts"
+      }
+    ],
+    like: [
+      {
+        type: String,
+        ref: "users"
+      }
+    ]
   },
   { timestamps: true }
 );

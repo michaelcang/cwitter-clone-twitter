@@ -24,13 +24,11 @@ module.exports = {
         user
           .create(userInfo)
           .then(newUser => {
-            let username = newUser.username;
-            let name = newUser.name;
             let token = jwt.sign({ username }, process.env.SECRET_KEY);
             res.status(201).json({
               msg: "successfully create new user",
               token,
-              name
+              username
             });
           })
           .catch(err => {
@@ -42,12 +40,11 @@ module.exports = {
   login: function(req, res) {
     let username = req.body.username;
     let userId = req.body.userId;
-    let name = req.body.name;
     let token = jwt.sign({ username, userId }, process.env.SECRET_KEY);
     res.status(200).json({
       message: "successfully sign in",
       token,
-      name
+      username
     });
   }
 };

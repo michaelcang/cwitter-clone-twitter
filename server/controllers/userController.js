@@ -6,7 +6,7 @@ module.exports = {
   getAllPosts: function(req, res) {
     let params = {};
     if (req.query.search) {
-      params = { "postText" : { $regex: `${req.query.search}`, $options: 'i' } };
+      params = { postText: { $regex: `${req.query.search}`, $options: "i" } };
     }
     post
       .find(params)
@@ -74,9 +74,22 @@ module.exports = {
     post
       .findByIdAndUpdate(postId, { $set: updatedPost }, { new: true })
       .then(post => {
-        res.status(200).json({
-          msg: "successfully update post",
-          post
+        let userLike = req.body.likedBy;
+        let userUnlike = req.body.unlikedBy;
+        if (userLike !== "") {
+          post.like.push(userLike);
+        }
+        if (userUnlike !== "") {
+          post.like.pull(userUnlike);
+          if (post.like[0] === undefined) {
+            post.like.shift();
+          }
+        }
+        post.save().then(post => {
+          res.status(200).json({
+            msg: "successfully update post",
+            post
+          });
         });
       })
       .catch(err => {
