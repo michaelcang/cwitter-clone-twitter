@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
-const { user, post } = require("../models");
+const { user, post, comment } = require("../models");
 
 module.exports = {
   getAllPosts: function(req, res) {
@@ -10,6 +9,7 @@ module.exports = {
     }
     post
       .find(params)
+      .populate('comments')
       .then(posts => {
         res.status(200).json({
           msg: "get all posts",
@@ -31,6 +31,7 @@ module.exports = {
     }
     post
       .find(params)
+      .populate('comments')
       .then(posts => {
         res.status(200).json({
           msg: `get posts by ${req.params.username} posts`,
@@ -87,9 +88,7 @@ module.exports = {
         }
         if (userUnlike !== "") {
           post.like.pull(userUnlike);
-          if (post.like[0] === undefined) {
-            post.like.shift();
-          }
+          post.like.pull(null);
         }
         post.save().then(post => {
           res.status(200).json({

@@ -21,13 +21,12 @@ let userSchema = new Schema(
       type: String,
       required: [true, "password is required"]
     },
-    name: String,
+    name: {
+      type: String,
+      required: [true, "password is required"]
+    },
     status: String,
     posts: [{
-      type: Schema.Types.ObjectId,
-      ref: "posts"
-    }],
-    likePosts: [{
       type: Schema.Types.ObjectId,
       ref: "posts"
     }]

@@ -20,16 +20,19 @@ body {
   border-radius: 10px;
 }
 
-.cwitter h4 {
+.cwitter h4,
+.modal h4 {
   text-align: center;
   margin-bottom: 20px;
 }
 
-.cwitter strong {
+.cwitter strong,
+.modal strong {
   font-weight: 500;
 }
 
-.cwitter em {
+.cwitter em,
+.modal em {
   color: gray;
 }
 
@@ -37,19 +40,45 @@ body {
   font-weight: 100;
 }
 
+.modal .post-body {
+  font-weight: 100;
+  font-size: 1.3em;
+}
+
+.modal-footer {
+  background-color: #daf3ff;
+}
+
+.modal .comment-body {
+  font-weight: 100;
+  line-height: 10px;
+}
+
+.modal .replying-to {
+  color: gray;
+}
+
 .cwitter .btn-group {
   margin: 10px 0;
 }
 
-.cwitter .footer-icon {
+.cwitter .footer-icon,
+.modal .footer-icon {
   margin-right: 50px;
   /* margin-bottom: -20px; */
 }
 
 .cwitter .far,
-.cwitter .fas {
+.cwitter .fas,
+.modal .far,
+.modal .fas {
   size: 2em;
   cursor: pointer;
+}
+
+.cwitter .fa-heart,
+.modal .fa-heart {
+  color: red;
 }
 
 .dropdown-menu p {
@@ -61,7 +90,9 @@ body {
   padding-bottom: -20px;
 }
 
-.new-post textarea {
+textarea {
+  padding-left: 5px;
+  padding-top: 5px;
   margin-top: 10px;
   margin-bottom: 5px;
   width: 100%;
