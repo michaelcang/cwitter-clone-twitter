@@ -1,0 +1,117 @@
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #daf3ff;
+}
+
+.cwitter {
+  margin: 50px auto;
+  width: 600px;
+  text-align: center;
+}
+
+#login,
+#register {
+  text-align: center;
+  margin: 50px auto;
+  width: 400px;
+  border: 2px solid lightblue;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.cwitter h4,
+.modal h4 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.cwitter strong,
+.modal strong {
+  font-weight: 500;
+}
+
+.cwitter em,
+.modal em {
+  color: gray;
+}
+
+.cwitter p {
+  font-weight: 100;
+}
+
+.modal .post-body {
+  font-weight: 100;
+  font-size: 1.3em;
+}
+
+.modal-footer {
+  background-color: #daf3ff;
+}
+
+.modal .comment-body {
+  font-weight: 100;
+  line-height: 10px;
+}
+
+.modal .replying-to {
+  color: gray;
+}
+
+.cwitter .btn-group {
+  margin: 10px 0;
+}
+
+.cwitter .footer-icon,
+.modal .footer-icon {
+  margin-right: 50px;
+  /* margin-bottom: -20px; */
+}
+
+.cwitter .far,
+.cwitter .fas,
+.modal .far,
+.modal .fas {
+  size: 2em;
+  cursor: pointer;
+}
+
+.cwitter .fa-heart,
+.modal .fa-heart {
+  color: red;
+}
+
+.dropdown-menu p {
+  margin-bottom: 0;
+}
+
+.new-post {
+  text-align: center;
+  padding-bottom: -20px;
+}
+
+textarea {
+  padding-left: 5px;
+  padding-top: 5px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  width: 100%;
+  height: 100%;
+  border: 1px solid lightskyblue;
+  border-radius: 10px;
+}
+
+.list-footer small {
+  margin-left: 10px;
+  font-size: 1.1em;
+}
+
+.alert {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%);
+  width: 350px;
+  margin: auto;
+  z-index: 10;
+}
