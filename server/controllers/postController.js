@@ -23,17 +23,18 @@ module.exports = {
       });
   },
   getUserPosts: function(req, res) {
-    let params = { username: req.params.username };
+    let params = {};
     if (req.query.like) {
       params.like = { $in: req.query.like };
+    } else {
+      params.username = req.params.username;
     }
-    user
+    post
       .find(params)
-      .populate("posts")
-      .then(user => {
+      .then(posts => {
         res.status(200).json({
-          msg: `get ${req.params.username} posts`,
-          posts: user[0].posts
+          msg: `get posts by ${req.params.username} posts`,
+          posts
         });
       })
       .catch(err => {
@@ -70,14 +71,19 @@ module.exports = {
   },
   updatePost: function(req, res) {
     let postId = req.params.postId;
-    let updatedPost = req.body;
+    let updatedPost = {};
+    if (req.body.postText) {
+      updatedPost.postText = req.body.postText;
+    }
     post
       .findByIdAndUpdate(postId, { $set: updatedPost }, { new: true })
       .then(post => {
         let userLike = req.body.likedBy;
         let userUnlike = req.body.unlikedBy;
         if (userLike !== "") {
-          post.like.push(userLike);
+          if (post.like.indexOf(userLike) < 0) {
+            post.like.push(userLike);
+          }
         }
         if (userUnlike !== "") {
           post.like.pull(userUnlike);

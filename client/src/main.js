@@ -3,16 +3,19 @@ new Vue({
   data: {
     isLoggedIn: false,
     isRegister: false,
-    username: "user1",
+    isProfile: false,
+    showLiked: false,
+    showResult: false,
+    username: "user2",
     email: "",
     password: "user1234",
     name: "",
     posts: "",
-    editPostId: "",
-    updateItem: "",
+    newPost: "",
     warning: "",
     hasWarning: false,
     search: "",
+    result: "",
     user: ""
   },
   methods: {
@@ -26,9 +29,11 @@ new Vue({
         .then(({ data }) => {
           if (data.token) {
             this.isLoggedIn = true;
-            this.user = data.username;
+            localStorage.setItem("username", data.username);
+            this.user = localStorage.getItem("username")
             localStorage.setItem("token", data.token);
             this.getPosts();
+            this.getUserPosts();
             this.cleanInput();
           } else {
             this.warning = data;
@@ -55,9 +60,11 @@ new Vue({
         .then(({ data }) => {
           if (data.token) {
             this.isLoggedIn = true;
-            this.user = data.name;
+            localStorage.setItem("username", data.username);
+            this.user = localStorage.getItem("username")
             localStorage.setItem("token", data.token);
             this.getPosts();
+            this.getUserPosts();
             this.cleanInput();
             this.isRegister = false;
           } else {
@@ -73,10 +80,42 @@ new Vue({
       let token = localStorage.getItem("token");
       let config = { headers: { token } };
       axios
-        .get("http://localhost:3000/user/", config)
+        .get("http://localhost:3000/post/", config)
         .then(({ data }) => {
           console.log(data);
           this.posts = data.posts;
+          this.showLiked = false;
+          this.isProfile = false;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getUserPosts: function() {
+      let token = localStorage.getItem("token");
+      let config = { headers: { token } };
+      axios
+        .get(`http://localhost:3000/post/${this.user}`, config)
+        .then(({ data }) => {
+          console.log(data);
+          this.posts = data.posts;
+          this.showLiked = false;
+          this.isProfile = true;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getLikedPosts: function() {
+      let token = localStorage.getItem("token");
+      let config = { headers: { token } };
+      axios
+        .get(`http://localhost:3000/post/${this.user}?like=${this.user}`, config)
+        .then(({ data }) => {
+          console.log(data);
+          this.posts = data.posts;
+          this.showLiked = true;
+          this.isProfile = true;
         })
         .catch(err => {
           console.log(err);
@@ -86,17 +125,18 @@ new Vue({
       let token = localStorage.getItem("token");
       let config = { headers: { token } };
       let payload = {
-        action: this.newItem,
-        tags: this.tags.split(" ")
+        username: this.user,
+        postText: this.newPost
       };
       axios
-        .post("http://localhost:3000/user", payload, config)
+        .post("http://localhost:3000/post", payload, config)
         .then(({ data }) => {
-          if (data.action) {
+          if (data.postText) {
             this.warning = data;
             this.hasWarning = true;
           } else {
             this.getPosts();
+            this.getUserPosts();
             this.cleanInput();
           }
         })
@@ -110,10 +150,11 @@ new Vue({
       let postId = this.editPostId;
       let payload;
       axios
-        .put(`http://localhost:3000/user/post/${postId}`, payload, config)
+        .put(`http://localhost:3000/post/${postId}`, payload, config)
         .then(({ data }) => {
           console.log(data);
           this.getPosts();
+          this.getUserPosts();
           this.cleanInput();
         })
         .catch(err => {
@@ -124,10 +165,11 @@ new Vue({
       let token = localStorage.getItem("token");
       let config = { headers: { token } };
       axios
-        .delete(`http://localhost:3000/user/post/${postId}`, config)
+        .delete(`http://localhost:3000/post/${postId}`, config)
         .then(({ data }) => {
           console.log(data);
           this.getPosts();
+          this.getUserPosts();
         })
         .catch(err => {
           console.log(err);
@@ -139,10 +181,13 @@ new Vue({
         let config = { headers: { token } };
         let query = this.search;
         axios
-          .get(`http://localhost:3000/user?search=${query}`, config)
+          .get(`http://localhost:3000/post?search=${query}`, config)
           .then(({ data }) => {
             console.log(data);
             this.posts = data.posts;
+            this.isProfile = false;
+            this.showResult = true;
+            this.result = this.search;
             this.cleanInput();
           })
           .catch(err => {
@@ -157,10 +202,11 @@ new Vue({
         likedBy: this.user
       };
       axios
-        .put(`http://localhost:3000/user/post/${postId}`, payload, config)
+        .put(`http://localhost:3000/post/${postId}`, payload, config)
         .then(({ data }) => {
           console.log(data);
           this.getPosts();
+          this.getUserPosts();
           this.cleanInput();
         })
         .catch(err => {
@@ -174,10 +220,11 @@ new Vue({
         unlikedBy: this.user
       };
       axios
-        .put(`http://localhost:3000/user/post/${postId}`, payload, config)
+        .put(`http://localhost:3000/post/${postId}`, payload, config)
         .then(({ data }) => {
           console.log(data);
           this.getPosts();
+          this.getUserPosts();
           this.cleanInput();
         })
         .catch(err => {
@@ -202,19 +249,17 @@ new Vue({
       return "@" + username;
     },
     cleanInput: function() {
-      this.updateItem = "";
-      this.addTags = "";
-      this.removeTags = "";
       this.username = "";
       this.email = "";
       this.password = "";
       this.name = "";
-      this.warning = "";
       this.search = "";
     }
   },
   created: function() {
     if (localStorage.getItem("token")) {
+      this.user = localStorage.getItem("username")
+      this.isLoggedIn = true;
       this.getPosts();
     }
   }

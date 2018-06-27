@@ -11,16 +11,10 @@ let postSchema = new Schema(
       type: String,
       required: [true, "post cannot be blank"]
     },
-    reply: [
+    comments: [
       {
         type: Schema.Types.ObjectId,
-        ref: "posts"
-      }
-    ],
-    retweet: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "posts"
+        ref: "comment"
       }
     ],
     like: [

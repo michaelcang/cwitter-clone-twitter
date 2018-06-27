@@ -23,19 +23,11 @@ let userSchema = new Schema(
     },
     name: String,
     status: String,
-    following: [{
-      type: Schema.Types.ObjectId,
-      ref: "users"
-    }],
-    followedBy: [{
-      type: Schema.Types.ObjectId,
-      ref: "users"
-    }],
     posts: [{
       type: Schema.Types.ObjectId,
       ref: "posts"
     }],
-    likes: [{
+    likePosts: [{
       type: Schema.Types.ObjectId,
       ref: "posts"
     }]
